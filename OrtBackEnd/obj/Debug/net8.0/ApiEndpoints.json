@@ -9,13 +9,13 @@
     "Parameters": [
       {
         "Name": "tests",
-        "Type": "OrtBackEnd.Models.Tests",
+        "Type": "OrtBackEnd.Models.Question",
         "IsRequired": true
       }
     ],
     "ReturnTypes": [
       {
-        "Type": "OrtBackEnd.Models.Tests",
+        "Type": "OrtBackEnd.Models.Question",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -27,41 +27,21 @@
   },
   {
     "ContainingType": "OrtBackEnd.Controllers.TestsController",
-    "Method": "CheckTestResults",
-    "RelativePath": "Tests/CheckResults",
+    "Method": "CheckQuizResults",
+    "RelativePath": "Tests/CheckQuizResults",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "tests",
-        "Type": "OrtBackEnd.Models.Tests",
+        "Name": "questionResponses",
+        "Type": "System.Collections.Generic.List\u00601[[OrtBackEnd.Models.Answer, OrtBackEnd, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "IsRequired": true
       }
     ],
     "ReturnTypes": [
       {
-        "Type": "OrtBackEnd.Models.Tests",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "OrtBackEnd.Controllers.TestsController",
-    "Method": "GetTest",
-    "RelativePath": "Tests/GetTest",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": [
-      {
-        "Type": "System.Collections.Generic.IEnumerable\u00601[[OrtBackEnd.Models.Tests, OrtBackEnd, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "Type": "OrtBackEnd.Models.Answer",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -74,7 +54,27 @@
   {
     "ContainingType": "OrtBackEnd.Controllers.TestsController",
     "Method": "GetTests",
-    "RelativePath": "Tests/GetTest/{id}",
+    "RelativePath": "Tests/GetTests",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[OrtBackEnd.Models.Question, OrtBackEnd, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "OrtBackEnd.Controllers.TestsController",
+    "Method": "GetTest",
+    "RelativePath": "Tests/GetTests/{id}",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -87,7 +87,7 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "OrtBackEnd.Models.Tests",
+        "Type": "OrtBackEnd.Models.Question",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -107,7 +107,7 @@
     "Parameters": [
       {
         "Name": "tests",
-        "Type": "OrtBackEnd.Models.Tests",
+        "Type": "OrtBackEnd.Models.Question",
         "IsRequired": true
       }
     ],
@@ -128,7 +128,7 @@
       },
       {
         "Name": "tests",
-        "Type": "OrtBackEnd.Models.Tests",
+        "Type": "OrtBackEnd.Models.Question",
         "IsRequired": true
       }
     ],

@@ -3,12 +3,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
-
 namespace OrtBackEnd.Migrations
 {
     /// <inheritdoc />
-    public partial class init : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -29,18 +27,6 @@ namespace OrtBackEnd.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Test", x => x.QuestionId);
-                });
-
-            migrationBuilder.InsertData(
-                table: "Test",
-                columns: new[] { "QuestionId", "AnswerA", "AnswerB", "AnswerC", "AnswerD", "CorrectAnswer", "QuestionText" },
-                values: new object[,]
-                {
-                    { 1, "", "", "", "", "", "" },
-                    { 2, "", "", "", "", "", "" },
-                    { 3, "", "", "", "", "", "" },
-                    { 4, "", "", "", "", "", "" },
-                    { 5, "", "", "", "", "", "" }
                 });
         }
 

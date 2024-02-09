@@ -7,7 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 var Configuration = builder.Configuration;
-builder.Services.AddDbContext<TestsDb>(option => option.UseNpgsql(Configuration.GetConnectionString("Testdb")));
+builder.Services.AddDbContext<QuestionsDb>(option => option.UseNpgsql(Configuration.GetConnectionString("Testdb")));
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

@@ -1,10 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace OrtBackEnd.Models
 {
-    public class Tests
+    public class Question
     {
-        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity), Key()]
         public int QuestionId { get; set; }
         public string? QuestionText { get; set; }
         public string? AnswerA { get; set; }
