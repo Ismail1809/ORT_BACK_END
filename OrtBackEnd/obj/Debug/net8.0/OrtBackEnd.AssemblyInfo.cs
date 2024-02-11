@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("OrtBackEnd")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+715abfa4fa3d0e224ffc711e395246ef5496f4a2")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0f5bf76f30cc793beee45f9442119dda75b61c00")]
 [assembly: System.Reflection.AssemblyProductAttribute("OrtBackEnd")]
 [assembly: System.Reflection.AssemblyTitleAttribute("OrtBackEnd")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

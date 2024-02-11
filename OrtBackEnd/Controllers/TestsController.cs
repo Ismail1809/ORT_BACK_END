@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OrtBackEnd.DatabaseContext;
 using OrtBackEnd.Models;
+using OrtBackEnd.ModelsDTO;
+using AutoMapper;
+using OrtBackEnd.Mappers;
 
 namespace OrtBackEnd.Controllers
 {
@@ -15,10 +18,12 @@ namespace OrtBackEnd.Controllers
     public class TestsController : ControllerBase
     {
         private readonly QuestionsDb _context;
+        private readonly IMapper _mapper;
 
-        public TestsController(QuestionsDb context)
+        public TestsController(QuestionsDb context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         // GET: api/Tests
@@ -26,21 +31,22 @@ namespace OrtBackEnd.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Question>>> GetTests()
         {
-            return await _context.Questions.ToListAsync();
+            var questions = await _context.Questions.ToListAsync();
+            return Ok(_mapper.Map<IEnumerable<QuestionDTO>>(questions));
         }
 
         // GET: api/Tests/5
         [HttpGet("GetTests/{id}")]
         public async Task<ActionResult<Question>> GetTest(int id)
         {
-            var tests = await _context.Questions.FindAsync(id);
+            var questions = await _context.Questions.FindAsync(id);
 
-            if (tests == null)
+            if (questions == null)
             {
                 return NotFound();
             }
 
-            return tests;
+            return Ok(_mapper.Map<QuestionDTO>(questions));
         }
 
         // PUT: api/Tests/5

@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "4cevtNHOBmT+5EG5skmVudwKV0rJY+VusXirc5KTY+2rud9no39oxR3gSPvuqfYMY9jjgrU0t8mpZSJIY52y9Q==",
+  "dgSpecHash": "0jbEoxDHqKZW78Z/n9TT36m/27Tvlk6XpbOD2F2XBaYG0WMOO5LFE7qLGY54z1WU1iU9t/lgR35rGnGm7iKFHQ==",
   "success": true,
   "projectFilePath": "C:\\aspnetcore\\OrtBackEnd\\OrtBackEnd\\OrtBackEnd.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\Ismail\\.nuget\\packages\\automapper\\13.0.1\\automapper.13.0.1.nupkg.sha512",
     "C:\\Users\\Ismail\\.nuget\\packages\\humanizer\\2.14.1\\humanizer.2.14.1.nupkg.sha512",
     "C:\\Users\\Ismail\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\Ismail\\.nuget\\packages\\humanizer.core.af\\2.14.1\\humanizer.core.af.2.14.1.nupkg.sha512",

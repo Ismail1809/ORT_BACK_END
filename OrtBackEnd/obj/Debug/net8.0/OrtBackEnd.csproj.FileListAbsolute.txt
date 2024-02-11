@@ -230,3 +230,4 @@ C:\aspnetcore\OrtBackEnd\OrtBackEnd\bin\Debug\net8.0\runtimes\win\lib\net7.0\Sys
 C:\aspnetcore\OrtBackEnd\OrtBackEnd\bin\Debug\net8.0\runtimes\win\lib\net7.0\System.Security.Cryptography.ProtectedData.dll
 C:\aspnetcore\OrtBackEnd\OrtBackEnd\bin\Debug\net8.0\runtimes\win\lib\net7.0\System.Windows.Extensions.dll
 C:\aspnetcore\OrtBackEnd\OrtBackEnd\obj\Debug\net8.0\OrtBackEnd.sourcelink.json
+C:\aspnetcore\OrtBackEnd\OrtBackEnd\bin\Debug\net8.0\AutoMapper.dll
