@@ -8,7 +8,7 @@ namespace OrtBackEnd.Mappers
     {
         public MappingProfile()
         {
-            CreateMap<Question, QuestionDTO>();
+            CreateMap<QuestionModel, QuestionModelDTO>();
         }
     }
 }

@@ -8,14 +8,14 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "tests",
-        "Type": "OrtBackEnd.Models.Question",
+        "Name": "question",
+        "Type": "OrtBackEnd.Models.QuestionModel",
         "IsRequired": true
       }
     ],
     "ReturnTypes": [
       {
-        "Type": "OrtBackEnd.Models.Question",
+        "Type": "OrtBackEnd.Models.QuestionModel",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -61,7 +61,7 @@
     "Parameters": [],
     "ReturnTypes": [
       {
-        "Type": "System.Collections.Generic.IEnumerable\u00601[[OrtBackEnd.Models.Question, OrtBackEnd, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[OrtBackEnd.Models.QuestionModel, OrtBackEnd, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -87,7 +87,7 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "OrtBackEnd.Models.Question",
+        "Type": "OrtBackEnd.Models.QuestionModel",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -107,7 +107,7 @@
     "Parameters": [
       {
         "Name": "tests",
-        "Type": "OrtBackEnd.Models.Question",
+        "Type": "OrtBackEnd.Models.QuestionModel",
         "IsRequired": true
       }
     ],
@@ -128,7 +128,7 @@
       },
       {
         "Name": "tests",
-        "Type": "OrtBackEnd.Models.Question",
+        "Type": "OrtBackEnd.Models.QuestionModel",
         "IsRequired": true
       }
     ],
