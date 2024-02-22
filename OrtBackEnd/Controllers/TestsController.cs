@@ -13,6 +13,14 @@ using OrtBackEnd.Mappers;
 
 namespace OrtBackEnd.Controllers
 {
+
+    public class AddQuestionResponse
+    {
+        public int Id { get; set; }
+        public int QuestionId { get; set; }
+        public string QuestionText { get; set; }
+    }
+
     [Route("[controller]")]
     [ApiController]
     public class TestsController : ControllerBase
@@ -29,15 +37,15 @@ namespace OrtBackEnd.Controllers
         // GET: api/Tests
         [Route("GetTests")]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Question>>> GetTests()
+        public async Task<ActionResult<IEnumerable<QuestionModel>>> GetTests()
         {
             var questions = await _context.Questions.ToListAsync();
-            return Ok(_mapper.Map<IEnumerable<QuestionDTO>>(questions));
+            return Ok(_mapper.Map<IEnumerable<QuestionModelDTO>>(questions));
         }
 
         // GET: api/Tests/5
         [HttpGet("GetTests/{id}")]
-        public async Task<ActionResult<Question>> GetTest(int id)
+        public async Task<ActionResult<QuestionModel>> GetTest(int id)
         {
             var questions = await _context.Questions.FindAsync(id);
 
@@ -46,14 +54,14 @@ namespace OrtBackEnd.Controllers
                 return NotFound();
             }
 
-            return Ok(_mapper.Map<QuestionDTO>(questions));
+            return Ok(_mapper.Map<QuestionModelDTO>(questions));
         }
 
         // PUT: api/Tests/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [Route("UpdateTest")]
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutTests(int id, Question tests)
+        public async Task<IActionResult> PutTests(int id, QuestionModel tests)
         {
             if (id != tests.QuestionId)
             {
@@ -65,6 +73,7 @@ namespace OrtBackEnd.Controllers
             try
             {
                 await _context.SaveChangesAsync();
+                return Ok();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -85,12 +94,30 @@ namespace OrtBackEnd.Controllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [Route("AddQuestion")]
         [HttpPost()]
-        public async Task<ActionResult<Question>> AddQuestion([FromBody] Question tests)
+        public async Task<ActionResult<QuestionModel>> AddQuestion([FromBody] QuestionModel question)
         {
-            _context.Questions.Add(tests);
+            var questionModelX = new QuestionModel
+            {
+                QuestionText = question.QuestionText,
+                CorrectAnswer = new CorrectAnswerModel { AnswerText = question.CorrectAnswer.AnswerText }
+            };
+
+            questionModelX.QuestionAnswers = new List<QuestionAnswerModel>();
+
+            if (question.QuestionAnswers is null) throw new ArgumentNullException(nameof(QuestionModel.QuestionAnswers));
+
+            foreach (var answer in question.QuestionAnswers)
+            {
+                questionModelX.QuestionAnswers.Add(answer);
+            }
+
+            await _context.Questions.AddAsync(questionModelX);
+
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetTests", new { id = tests.QuestionId }, tests);
+            var response = new AddQuestionResponse { QuestionId = questionModelX.QuestionId, QuestionText = questionModelX.QuestionText };
+
+            return Ok(response);
         }
 
 
@@ -109,7 +136,7 @@ namespace OrtBackEnd.Controllers
                 // Assuming you have a way to identify which question each response belongs to, e.g., a QuestionId property on QuestionResponse
                 var correctAnswer = await _context.Questions
                     .Where(t => t.QuestionId == response.QuestionId) // This assumes QuestionResponse includes a QuestionId property
-                    .Select(t => t.CorrectAnswer)
+                    .Select(t => t.CorrectAnswer.AnswerText)
                     .FirstOrDefaultAsync();
 
                 if (response.UserAnswer?.Equals(correctAnswer, StringComparison.OrdinalIgnoreCase) == true)
