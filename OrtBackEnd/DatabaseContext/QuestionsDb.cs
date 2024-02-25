@@ -15,6 +15,7 @@ namespace OrtBackEnd.DatabaseContext
         public virtual DbSet<QuestionAnswerModel> QuestionAnswers { get; set; }
         public virtual DbSet<CorrectAnswerModel> CorrectAnswers { get; set; }
 
+        public virtual DbSet<User> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -41,7 +42,6 @@ namespace OrtBackEnd.DatabaseContext
                 .HasOne(q => q.CorrectAnswer)
                 .WithOne(q => q.QuestionModel)
                 .HasForeignKey<CorrectAnswerModel>(q => q.QuestionId);
-
 
 
 
