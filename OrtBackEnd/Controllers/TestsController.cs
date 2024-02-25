@@ -57,38 +57,6 @@ namespace OrtBackEnd.Controllers
             return Ok(_mapper.Map<QuestionModelDTO>(questions));
         }
 
-        // PUT: api/Tests/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [Route("UpdateTest")]
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutTests(int id, QuestionModel tests)
-        {
-            if (id != tests.QuestionId)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(tests).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-                return Ok();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!TestsExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
 
         // POST: api/Tests
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
@@ -148,23 +116,88 @@ namespace OrtBackEnd.Controllers
             return Ok(correctAnswersCount);
         }
 
-        // DELETE: api/Tests/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteTests(int id)
+
+        [Route("AddUser")]
+        [HttpPost()]
+        public async Task<ActionResult<QuestionModel>> AddUser([FromBody] User users)
         {
-            var tests = await _context.Questions.FindAsync(id);
-            if (tests == null)
+            if(users != null)
+            {
+                await _context.Users.AddAsync(users);
+                await _context.SaveChangesAsync();
+            }
+            else
+            {
+                return NoContent();
+            }
+
+            return Ok(users);
+        }
+
+
+        // PUT: api/Tests/5
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Route("UpdateTest")]
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutTests(int id, QuestionModel tests)
+        {
+            if (id != tests.QuestionId)
+            {
+                return BadRequest();
+            }
+
+            _context.Entry(tests).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!TestsExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+
+
+        // DELETE: api/Tests/5
+        [HttpDelete("DeleteUser/{id}")]
+        public async Task<IActionResult> DeleteUser(Guid id)
+        {
+            var user = await _context.Users.FindAsync(id);
+            if (user == null)
             {
                 return NotFound();
             }
 
-            _context.Questions.Remove(tests);
+            _context.Users.Remove(user);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-    
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteTest(int id)
+        {
+            var test = await _context.Questions.FindAsync(id);
+            if (test == null)
+            {
+                return NotFound();
+            }
+
+            _context.Questions.Remove(test);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
 
         private bool TestsExists(int id)
         {
