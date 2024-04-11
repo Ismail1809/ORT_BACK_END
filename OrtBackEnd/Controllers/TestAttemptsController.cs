@@ -67,7 +67,7 @@ namespace OrtBackEnd.Controllers
 
             if (testAttempt == null || existingAttempt == null)
             {
-                return base.BadRequest(new ApiResponse<object>(ResultCode.NotFound, ResultDescription.NotFound));
+                return base.Ok(new ApiResponse<object>(ResultCode.NotFound, ResultDescription.NotFound));
             }
 
             try

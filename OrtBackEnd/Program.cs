@@ -6,9 +6,14 @@ using OrtBackEnd.Repositories;
 using Asp.Versioning;
 using System.Text.Json.Serialization;
 using Microsoft.Extensions.DependencyInjection;
+using OrtBackEnd.Extensions;
+using NLog;
 
 var builder = WebApplication.CreateBuilder(args);
 
+LogManager.LoadConfiguration(string.Concat(Directory.GetCurrentDirectory(), "/nlog.config"));
+
+builder.Services.ConfigureLoggerService();
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -40,6 +45,9 @@ apiVersioningBuilder.AddApiExplorer(
     });
 
 var app = builder.Build();
+
+var logger = app.Services.GetRequiredService<ILoggerManager>();
+app.ConfigureCustomExceptionMiddleware();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

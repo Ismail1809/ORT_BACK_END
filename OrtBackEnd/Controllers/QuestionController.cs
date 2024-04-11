@@ -51,7 +51,7 @@ namespace OrtBackEnd.Controllers
 
             if (question == null || existingQuestion == null)
             {
-                return base.BadRequest(new ApiResponse<object>(ResultCode.NotFound, ResultDescription.NotFound));
+                return base.Ok(new ApiResponse<object>(ResultCode.NotFound, ResultDescription.NotFound));
             }
 
             try
@@ -83,12 +83,12 @@ namespace OrtBackEnd.Controllers
             Question question = await _questionRepository.GetById(id);
             if (question == null)
             {
-                return base.BadRequest(new ApiResponse<object>(ResultCode.NotFound, ResultDescription.NotFound));
+                return base.Ok(new ApiResponse<object>(ResultCode.NotFound, ResultDescription.NotFound));
             }
 
             try
             {
-                _questionRepository.DeleteAsync(id);
+                await _questionRepository.DeleteAsync(id);
 
                 return base.Ok(new ApiResponse<object>(ResultCode.Success, ResultDescription.Success));
             }

@@ -71,7 +71,7 @@ namespace OrtBackEnd.Controllers
 
             if (user == null || existingUser == null)
             {
-                return base.BadRequest(new ApiResponse<object>(ResultCode.NotFound, ResultDescription.NotFound));
+                return base.Ok(new ApiResponse<object>(ResultCode.NotFound, ResultDescription.NotFound));
             }
 
             try
@@ -102,9 +102,9 @@ namespace OrtBackEnd.Controllers
                 var payload = await _userRepository.AddAsync(user);
                 return base.Ok(new ApiResponse<object>(ResultCode.Success, ResultDescription.Success));
             }
-            catch (Exception ex)
+            catch (ValidationException ex)
             {
-                return base.BadRequest(new ApiResponse<object>(ResultCode.NoContent, ResultDescription.NoContent));
+                return base.BadRequest(new ApiResponse<object>(ResultCode.NoContent, ResultDescription.NoContent, ex.Message));
             }
         }
 
@@ -134,7 +134,7 @@ namespace OrtBackEnd.Controllers
             User user = await _userRepository.GetById(id);
             if (user == null)
             {
-                return base.BadRequest(new ApiResponse<object>(ResultCode.NotFound, ResultDescription.NotFound));
+                return base.Ok(new ApiResponse<object>(ResultCode.NotFound, ResultDescription.NotFound));
             }
 
             try
