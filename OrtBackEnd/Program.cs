@@ -1,20 +1,53 @@
 using Microsoft.EntityFrameworkCore;
+using OrtBackEnd.Contracts;
 using OrtBackEnd.DatabaseContext;
 using OrtBackEnd.Mappers;
+using OrtBackEnd.Repositories;
+using Asp.Versioning;
+using System.Text.Json.Serialization;
+using Microsoft.Extensions.DependencyInjection;
+using OrtBackEnd.Extensions;
+using NLog;
 
 var builder = WebApplication.CreateBuilder(args);
 
+LogManager.LoadConfiguration(string.Concat(Directory.GetCurrentDirectory(), "/nlog.config"));
+
+builder.Services.ConfigureLoggerService();
 // Add services to the container.
 
 builder.Services.AddControllers();
 var Configuration = builder.Configuration;
-builder.Services.AddDbContext<QuestionsDb>(option => option.UseNpgsql(Configuration.GetConnectionString("Testdb")));
+builder.Services.AddDbContext<DatabaseContext>(option => option.UseNpgsql(Configuration.GetConnectionString("Testdb")));
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(typeof(MappingProfile));
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<ITestRepository, TestRepository>();
+builder.Services.AddScoped<IQuestionRepository, QuestionRepository>();
+builder.Services.AddScoped<ITestAttemptsRepository, TestAttemptsRepository>();
+var apiVersioningBuilder = builder.Services.AddApiVersioning(o =>
+{
+    o.AssumeDefaultVersionWhenUnspecified = true;
+    o.DefaultApiVersion = new ApiVersion(1, 0);
+    o.ReportApiVersions = true;
+    o.ApiVersionReader = ApiVersionReader.Combine(
+        new QueryStringApiVersionReader("api-version"),
+        new HeaderApiVersionReader("X-Version"),
+        new MediaTypeApiVersionReader("ver"));
+});
+apiVersioningBuilder.AddApiExplorer(
+    options =>
+    {
+        options.GroupNameFormat = "'v'VVV";
+        options.SubstituteApiVersionInUrl = true;
+    });
 
 var app = builder.Build();
+
+var logger = app.Services.GetRequiredService<ILoggerManager>();
+app.ConfigureCustomExceptionMiddleware();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
