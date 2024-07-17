@@ -1,19 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 using Asp.Versioning;
 using AutoMapper;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using OrtBackEnd.API;
 using OrtBackEnd.Contracts;
-using OrtBackEnd.DatabaseContext;
 using OrtBackEnd.Models;
 using OrtBackEnd.Controllers.RequestsAndResponses.TestAttemptsExchanges;
-using OrtBackEnd.Repositories;
 
 namespace OrtBackEnd.Controllers
 {

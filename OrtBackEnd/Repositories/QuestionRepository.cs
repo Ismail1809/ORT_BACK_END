@@ -1,14 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OrtBackEnd.Contracts;
 using OrtBackEnd.Models;
+using OrtBackEnd.DbContent;
 
 namespace OrtBackEnd.Repositories
 {
     public class QuestionRepository : IQuestionRepository
     {
-        private readonly DatabaseContext.DatabaseContext _context;
+        private readonly DatabaseContext _context;
 
-        public QuestionRepository(DatabaseContext.DatabaseContext context)
+        public QuestionRepository(DatabaseContext context)
         {
             _context = context;
         }

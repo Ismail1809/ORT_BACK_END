@@ -1,19 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 using Asp.Versioning;
 using AutoMapper;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using OrtBackEnd.API;
 using OrtBackEnd.Contracts;
 using OrtBackEnd.Controllers.RequestsAndResponses.TestAttemptsExchanges;
 using OrtBackEnd.Controllers.RequestsAndResponses.TestExchanges;
 using OrtBackEnd.Models;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace OrtBackEnd.Controllers
 {
@@ -83,8 +76,6 @@ namespace OrtBackEnd.Controllers
             {
                 return base.BadRequest(new ApiResponse<object>(ResultCode.NotFound, ResultDescription.NotFound));
             }
-
-
 
             return base.Ok(new ApiResponse<TestResponse>(ResultCode.Success, ResultDescription.Success, _mapper.Map<TestResponse>(randomTest)));
         }

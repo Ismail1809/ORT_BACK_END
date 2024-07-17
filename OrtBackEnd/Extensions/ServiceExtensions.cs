@@ -1,5 +1,5 @@
-﻿using OrtBackEnd.Contracts;
-using OrtBackEnd.Repositories;
+﻿using OrtBackEnd.Repositories;
+using OrtBackEnd.Services;
 
 namespace OrtBackEnd.Extensions
 {

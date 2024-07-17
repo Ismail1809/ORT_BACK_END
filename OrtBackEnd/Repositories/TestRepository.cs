@@ -1,16 +1,16 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OrtBackEnd.Contracts;
 using OrtBackEnd.Controllers.RequestsAndResponses.TestAttemptsExchanges;
-using OrtBackEnd.DatabaseContext;
 using OrtBackEnd.Models;
+using OrtBackEnd.DbContent;
 
 namespace OrtBackEnd.Repositories
 {
     public class TestRepository: ITestRepository
     {
-        private readonly DatabaseContext.DatabaseContext _context;
+        private readonly DatabaseContext _context;
 
-        public TestRepository(DatabaseContext.DatabaseContext context)
+        public TestRepository(DatabaseContext context)
         {
             _context = context;
         }

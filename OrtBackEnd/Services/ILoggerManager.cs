@@ -1,4 +1,4 @@
-﻿namespace OrtBackEnd.Contracts
+﻿namespace OrtBackEnd.Services
 {
     public interface ILoggerManager
     {

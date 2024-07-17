@@ -1,6 +1,6 @@
-﻿using OrtBackEnd.Contracts;
-using NLog;
+﻿using NLog;
 using ILogger = NLog.ILogger;
+using OrtBackEnd.Services;
 
 namespace OrtBackEnd.Repositories
 {
