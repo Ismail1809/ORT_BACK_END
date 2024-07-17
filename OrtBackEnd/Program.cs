@@ -1,13 +1,14 @@
 using Microsoft.EntityFrameworkCore;
 using OrtBackEnd.Contracts;
-using OrtBackEnd.DatabaseContext;
 using OrtBackEnd.Mappers;
 using OrtBackEnd.Repositories;
 using Asp.Versioning;
-using System.Text.Json.Serialization;
-using Microsoft.Extensions.DependencyInjection;
 using OrtBackEnd.Extensions;
 using NLog;
+using OrtBackEnd.Services;
+using OrtBackEnd.DbContent;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,6 +28,18 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ITestRepository, TestRepository>();
 builder.Services.AddScoped<IQuestionRepository, QuestionRepository>();
 builder.Services.AddScoped<ITestAttemptsRepository, TestAttemptsRepository>();
+builder.Services.AddScoped<IUserService, UserService>();
+
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+    {
+        policy.WithOrigins("http://localhost:3000")
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+
 var apiVersioningBuilder = builder.Services.AddApiVersioning(o =>
 {
     o.AssumeDefaultVersionWhenUnspecified = true;
@@ -44,6 +57,12 @@ apiVersioningBuilder.AddApiExplorer(
         options.SubstituteApiVersionInUrl = true;
     });
 
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme,
+        options => builder.Configuration.Bind("JwtSettings", options))
+    .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme,
+        options => builder.Configuration.Bind("CookieSettings", options));
+
 var app = builder.Build();
 
 var logger = app.Services.GetRequiredService<ILoggerManager>();
@@ -57,6 +76,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors();
 
 app.UseAuthorization();
 

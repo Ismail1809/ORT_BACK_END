@@ -1,35 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Net;
-using System.Threading.Tasks;
 using Asp.Versioning;
 using AutoMapper;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi.Any;
 using OrtBackEnd.API;
 using OrtBackEnd.Contracts;
 using OrtBackEnd.Controllers.RequestsAndResponses.UserExchanges;
-using OrtBackEnd.DatabaseContext;
 using OrtBackEnd.Models;
+using OrtBackEnd.Services;
 
 namespace OrtBackEnd.Controllers
 {
     [ApiVersion("1.0")]
     [Route("api/[controller]/[action]")]
     [ApiController]
+    [Authorize]
     public class UserController : ControllerBase
     {
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
+        private readonly IUserService _userService;
 
-        public UserController(IUserRepository userRepository, IMapper mapper)
+        public UserController(IUserRepository userRepository, IMapper mapper, IUserService userService)
         {
-            _userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository)); ;
+            _userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository)); 
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            _userService = userService ?? throw new ArgumentNullException(nameof(userService));
         }
 
         [HttpGet]
@@ -89,42 +86,35 @@ namespace OrtBackEnd.Controllers
 
         // POST: api/UserManagement
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost("register")]
-        public async Task<ActionResult> RegisterUser([FromBody] User user)
+        [AllowAnonymous]
+        [HttpPost("Register")]
+        public async Task<ActionResult> RegisterUser([FromBody] UserRegisterRequest user)
         {
-            if(user == null)
-            {
-                return NoContent();
-            }
             try
             {
-                
-                var payload = await _userRepository.AddAsync(user);
-                return base.Ok(new ApiResponse<object>(ResultCode.Success, ResultDescription.Success));
+                var response = await _userService.RegisterAsync(user);
+                if (response == null)
+                {
+                    return base.Ok(new ApiResponse<object>(ResultCode.NoContent, ResultDescription.NoContent, "Username or password did not match."));
+                }
+                return base.Ok(new ApiResponse<UserResponse>(ResultCode.Success, ResultDescription.Success, response));
             }
             catch (ValidationException ex)
             {
-                return base.BadRequest(new ApiResponse<object>(ResultCode.NoContent, ResultDescription.NoContent, ex.Message));
+                return base.BadRequest(new ApiResponse<object>(ResultCode.NoContent, ResultDescription.NoContent, "N ."));
             }
         }
 
-        [HttpPost("login")]
-        public async Task<ActionResult> LoginUser([FromBody]User user)
+        [AllowAnonymous]
+        [HttpPost("Login")]
+        public async Task<ActionResult> LoginUser([FromBody]UserLoginRequest user)
         {
-            if (user == null)
+            var token = _userService.Login(user);
+            if (token == null || token == string.Empty)
             {
-                return NoContent();
+                return base.BadRequest(new ApiResponse<object>( ResultCode.NotFound, ResultDescription.NotFound, "UserName or Password is incorrect" ));
             }
-            try
-            {
-                User payload = await _userRepository.AddAsync(user);
-
-                return base.Ok(new ApiResponse<object>(ResultCode.Success, ResultDescription.Success));
-            }
-            catch (Exception ex)
-            {
-                return base.BadRequest(new ApiResponse<object>(ResultCode.NoContent, ResultDescription.NoContent));
-            }
+            return base.Ok(new ApiResponse<object>(ResultCode.Success, ResultDescription.Success, token));
         }
 
         // DELETE: api/UserManagement/5
