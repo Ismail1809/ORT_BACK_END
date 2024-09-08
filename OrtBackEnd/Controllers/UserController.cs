@@ -32,7 +32,7 @@ namespace OrtBackEnd.Controllers
         [HttpGet]
         public async Task<ActionResult> GetUsers()
         {
-            var users = await _userRepository.GetAllAsync();
+            var users = await _userService.GetUsers();
 
             if(users == null)
             {
@@ -47,7 +47,7 @@ namespace OrtBackEnd.Controllers
         [HttpGet("me")]
         public async Task<ActionResult> GetUser([FromQuery] int id)
         {
-            User user = await _userRepository.GetById(id);
+            var user = await _userService.GetUser(id);
 
             if (user == null)
             {
@@ -64,7 +64,7 @@ namespace OrtBackEnd.Controllers
         [HttpPut("me")]
         public async Task<ActionResult> PutUser([FromQuery] int id,[FromBody] UserUpdateRequest user)
         {
-            User existingUser = await _userRepository.GetById(id);
+            var existingUser = await _userService.GetUser(id);
 
             if (user == null || existingUser == null)
             {
@@ -74,7 +74,7 @@ namespace OrtBackEnd.Controllers
             try
             {
                 _mapper.Map(user, existingUser);
-                await _userRepository.UpdateAsync(existingUser);
+                await _userService.UpdateAsync(existingUser);
 
                 return base.Ok(new ApiResponse<UserResponse>(ResultCode.Success, ResultDescription.Success, _mapper.Map<UserResponse>(existingUser)));
             }
@@ -121,7 +121,7 @@ namespace OrtBackEnd.Controllers
         [HttpDelete]
         public async Task<ActionResult> DeleteUser([FromQuery] int id)
         {
-            User user = await _userRepository.GetById(id);
+            User user = await _userService.GetUser(id);
             if (user == null)
             {
                 return base.Ok(new ApiResponse<object>(ResultCode.NotFound, ResultDescription.NotFound));
@@ -129,7 +129,7 @@ namespace OrtBackEnd.Controllers
 
             try
             {
-                await _userRepository.DeleteAsync(id);
+                await _userService.DeleteAsync(id);
             }
             catch(Exception ex)
             {
