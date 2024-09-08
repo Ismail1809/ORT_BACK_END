@@ -1,5 +1,7 @@
 ﻿using Elfie.Serialization;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using OrtBackEnd.Contracts;
 using OrtBackEnd.Controllers.RequestsAndResponses.UserExchanges;
 using OrtBackEnd.DbContent;
 using OrtBackEnd.Models;
@@ -12,6 +14,7 @@ namespace OrtBackEnd.Services
     public class UserService : IUserService
     {
         private readonly IConfiguration _configuration;
+        private readonly IUserRepository _userRepository;
         private readonly DatabaseContext _context;
         private readonly string _pepper;
         private readonly int _iteration = 3;
@@ -21,6 +24,31 @@ namespace OrtBackEnd.Services
             _configuration = configuration;
             _context = context;
             _pepper = Environment.GetEnvironmentVariable("PasswordHashExamplePepper");
+        }
+
+        public async Task<User> GetUser(int id)
+        {
+            var user = await _userRepository.GetById(id);
+
+            return user;
+        }
+
+        public async Task<IEnumerable<User>> GetUsers()
+        {
+            var users = await _userRepository.GetAllAsync();
+
+            return users;
+        }
+
+        public async Task UpdateAsync(User existingUser)
+        {
+
+            await _userRepository.UpdateAsync(existingUser);
+        }
+
+        public async Task DeleteAsync(int id)
+        {
+            await _userRepository.DeleteAsync(id);
         }
 
         public string Login(UserLoginRequest userRequest)
